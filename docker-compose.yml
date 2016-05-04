@@ -1,22 +1,28 @@
-web:
-  build: .
-  command: node server.js
-  environment:
-    - REDIS_URL
-  ports:
-    - 80:8080
-  links:
-    - redis
+version: "2"
+services:
+  web:
+    build: .
+    command: node server.js
+    environment:
+      - REDIS_URL
+    ports:
+      - 80:8080
+    links:
+      - redis
 
-worker:
-  command: node worker.js
-  environment:
-    - REDIS_URL
-  build: .
-  links:
-    - redis
+  worker:
+    command: node worker.js
+    environment:
+      - REDIS_URL
+    build: .
+    links:
+      - redis
 
-redis:
-  image: convox/redis
-  ports:
-    - 6379
+  redis:
+    image: convox/redis
+    ports:
+      - 6379
+networks:
+  dev:
+    external:
+      name: arthrex_dev
